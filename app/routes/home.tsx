@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <main className="bg-[url('/images/bg-main.svg')]bg-cover">
+  return <main className="bg-[url('/images/bg-main.svg')] bg-cover">
     <Navbar />
 
     <section className="main-section">
@@ -19,14 +19,14 @@ export default function Home() {
         <h1>Track your Application & Resume Ratings</h1>
         <h2>Review your submissions and check AI-Powered feedback.</h2>
       </div>
-    </section>
-    
-    {resumes.length>0 && (
+
+      {resumes.length>0 && (
       <div className="resumes-section">
         {resumes.map((resume) => (
           <ResumeCard key={resume.id} resume={resume} />
         ))}
       </div>
-    )} 
+    )}
+    </section>
   </main>
 }
