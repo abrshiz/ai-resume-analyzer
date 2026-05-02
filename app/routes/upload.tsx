@@ -5,6 +5,7 @@ import Navbar from "~/components/Navbar"
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { usePuterStore } from "~/lib/puter";
 import { generateUUID } from "~/lib/utils";
+import { prepareInstructions } from "../../constants";
 
 const Upload =()=>{
     const{auth,isLoading,fs, ai, kv} =usePuterStore();
@@ -43,6 +44,21 @@ const Upload =()=>{
             feedback:'',   
         }
         await kv.set(`resume:${uuid}`, JSON.stringify(data));
+        setStatusText('Analyzing the resume ...');
+
+        const feedback = await ai.feedback(
+            uploadedFile.path,
+            prepareInstructions({jobTitle, jobDescription})
+        )
+        if (!feedback) return setStatusText('Failed to analyze the resume. Please try again.');
+        const feedbackText= typeof feedback.message.content ==='string' 
+            ? feedback.message.content
+            : feedback.message.content[0].text;
+
+        data.feedback=JSON.parse(feedbackText);
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
+        setStatusText('Analysis complete! Redirecting to results page ...');
+        console.log(data);
     }
 
     const handleSubmit=(e: FormEvent<HTMLFormElement>)=>{
