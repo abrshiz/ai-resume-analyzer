@@ -1,7 +1,8 @@
 import { Link } from "react-router"
 import ScoreCircle from "./ScoreCircle"
 
-const ResumeCard:({resume}:{resume: any})=>Element=({resume:{id, companyName, jobTitle,feedback, imagePath}}: {resume: Resume})=>{
+const ResumeCard = ({resume}:{resume: Resume})=>{
+    const { id, companyName, jobTitle, feedback, imagePath } = resume;
     return(
         <Link to={`/resume/${id}`} className="resume-card animate-in fade-in duration-1000">
             <div className="resume-card-header">
